@@ -9,10 +9,10 @@ class WeatherModel {
   static int temp;
   int icon;
 
-  Future getCityWeather(String cityName) async {
+  Future getCityCurrentWeather(String cityName) async {
     NetworkHelper networkHelper = NetworkHelper();
 
-    var weatherData = await networkHelper.GetCityWeather();
+    var weatherData = await networkHelper.getCityWeather();
 
     if (weatherData != null) {
       double tmp = weatherData['main']['temp'];
@@ -25,13 +25,13 @@ class WeatherModel {
     return weatherData;
   }
 
-  Future getLocationWeather() async {
+  Future getLocationCurrentWeather() async {
     Location location = Location();
     await location.getCurrentLocation();
 
     NetworkHelper networkHelper = NetworkHelper();
 
-    var weatherData = await networkHelper.GetPositionWeather(
+    var weatherData = await networkHelper.getPositionWeather(
         latitude: location.latitude, longitude: location.longitude);
 
     if (weatherData != null) {

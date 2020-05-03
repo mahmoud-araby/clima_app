@@ -6,8 +6,10 @@ class NetworkHelper {
   static const apiKey = 'e72ca729af228beabd5d20e3b7749713';
   static const openWeatherMapURL =
       'https://api.openweathermap.org/data/2.5/weather';
+  static const openWeatherMapHourlyURL =
+      'https://api.openweathermap.org/data/2.5/weather';
 
-  Future GetPositionWeather({double longitude, double latitude}) async {
+  Future getPositionWeather({double longitude, double latitude}) async {
     http.Response response = await http.get(
         '$openWeatherMapURL?lat=$latitude&lon=$longitude&appid=$apiKey&units=metric');
     if (response.statusCode == 200) {
@@ -17,7 +19,7 @@ class NetworkHelper {
     }
   }
 
-  Future GetCityWeather({String cityName}) async {
+  Future getCityWeather({String cityName}) async {
     http.Response response = await http
         .get('$openWeatherMapURL?q=$cityName&appid=$apiKey&units=metric');
     if (response.statusCode == 200) {
