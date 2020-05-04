@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
 
 import '../services/weather.dart';
-import 'location_screen.dart';
+import 'initial_view.dart';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -10,21 +11,15 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  WeatherModel weather = WeatherModel();
-  int temperature;
-  String weatherIcon;
-  String cityName;
-  String weatherMessage;
-
   @override
   void initState() {
-    weather = WeatherModel();
+    getData();
     super.initState();
-    GetData();
   }
 
-  GetData() async {
-    var data = await weather.getLocationCurrentWeather();
+  getData() async {
+    await Future.delayed(Duration(seconds: 3));
+    await Provider.of<WeatherModel>(context, listen: false).getCurrentWeather();
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return LocationScreen();
     }));

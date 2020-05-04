@@ -1,10 +1,13 @@
 class CurrentModule {
-  double temp;
-  double feelLike;
+  int time;
+  int sunrise;
+  int sunset;
+  int temp;
+  int feelLike;
+  int humidity;
   double windSpeed;
-  double humidity;
+  int windDeg;
   int id;
-  String time;
   String description;
 
   CurrentModule(
@@ -14,13 +17,19 @@ class CurrentModule {
       this.windSpeed,
       this.description,
       this.id,
-      this.time});
+      this.time,
+      this.sunset,
+      this.sunrise,
+      this.windDeg});
   CurrentModule.formJson(Map<String, dynamic> jsonFile) {
     time = jsonFile['dt'];
-    temp = jsonFile['temp'];
-    feelLike = jsonFile['feelLike'];
-    humidity = jsonFile['humidity'];
+    sunrise = jsonFile['sunrise'];
+    sunset = jsonFile['sunset'];
+    temp = jsonFile['temp'].toInt();
+    feelLike = jsonFile['feels_like'].toInt();
+    humidity = jsonFile['humidity'].toInt();
     windSpeed = jsonFile['wind_speed'];
+    windDeg = jsonFile['wind_deg'].toInt();
     id = jsonFile['weather'][0]['id'];
     description = jsonFile['weather'][0]['description'];
   }

@@ -1,48 +1,43 @@
+import 'package:climaapp/Models/current_module.dart';
+import 'package:climaapp/Models/days_module.dart';
+import 'package:climaapp/Models/hourly_module.dart';
+import 'package:flutter/material.dart';
+
 import '../services/location.dart';
 import '../services/networking.dart';
 
-const apiKey = 'e72ca729af228beabd5d20e3b7749713';
-const openWeatherMapURL = 'https://api.openweathermap.org/data/2.5/weather';
+class WeatherModel extends ChangeNotifier {
+  CurrentModule currentWeather;
+  List<DaysModule> daysWeather = [];
+  List<HourlyModule> hourlyWeather = [];
 
-class WeatherModel {
-  static String cityName;
-  static int temp;
-  int icon;
-
-  Future getCityCurrentWeather(String cityName) async {
-    NetworkHelper networkHelper = NetworkHelper();
-
-    var weatherData = await networkHelper.getCityWeather();
-
-    if (weatherData != null) {
-      double tmp = weatherData['main']['temp'];
-      temp = tmp.toInt();
-      icon = weatherData['weather'][0]['id'];
-      cityName = weatherData['name'];
-    } else {
-      temp = null;
-    }
-    return weatherData;
-  }
-
-  Future getLocationCurrentWeather() async {
-    Location location = Location();
-    await location.getCurrentLocation();
-
+  Future getLocationCurrentWeather(Location location) async {
     NetworkHelper networkHelper = NetworkHelper();
 
     var weatherData = await networkHelper.getPositionWeather(
         latitude: location.latitude, longitude: location.longitude);
-
+    print(weatherData);
     if (weatherData != null) {
-      double tmp = weatherData['main']['temp'];
-      temp = tmp.toInt();
-      icon = weatherData['weather'][0]['id'];
-      cityName = weatherData['name'];
-    } else {
-      temp = null;
+      var weather;
+      currentWeather = CurrentModule.formJson(weatherData['current']);
+      notifyListeners();
+      weatherData['hourly'].forEach((element) {
+        weather = HourlyModule.formJson(element);
+        hourlyWeather.add(weather);
+      });
+      notifyListeners();
+      for (int count = 0; count < 7; count++) {
+        weather = DaysModule.formJson(weatherData['daily'][count]);
+        daysWeather.add(weather);
+      }
+      notifyListeners();
     }
-    return weatherData;
+  }
+
+  Future getCurrentWeather() async {
+    Location location = Location();
+    await location.getCurrentLocation();
+    await getLocationCurrentWeather(location);
   }
 
   String getWeatherIcon(int condition) {

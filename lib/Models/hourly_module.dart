@@ -1,8 +1,8 @@
 class HourlyModule {
-  double temp;
-  double feelLike;
-  double windSpeed;
-  double humidity;
+  int temp;
+  int feelLike;
+  int windSpeed;
+  int humidity;
   int id;
   int time;
   String description;
@@ -17,11 +17,11 @@ class HourlyModule {
       this.time});
   HourlyModule.formJson(Map<String, dynamic> jsonFile) {
     time = jsonFile['dt'];
-    temp = jsonFile['temp'];
-    feelLike = jsonFile['feelLike'];
-    humidity = jsonFile['humidity'];
-    windSpeed = jsonFile['wind_speed'];
-    id = jsonFile['weather'][0]['id'];
+    temp = jsonFile['temp'].toInt();
+    feelLike = jsonFile['feels_like'].toInt();
+    humidity = jsonFile['humidity'].toInt();
+    windSpeed = jsonFile['wind_speed'].toInt();
+    id = jsonFile['weather'][0]['id'].toInt();
     description = jsonFile['weather'][0]['description'];
   }
 }

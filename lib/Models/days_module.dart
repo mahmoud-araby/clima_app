@@ -2,19 +2,19 @@ class DaysModule {
   int time;
   int sunrise;
   int sunset;
-  double temp;
-  double min;
-  double max;
-  double day;
-  double night;
-  double eve;
-  double morn;
-  double dayFeelLike;
-  double nightFeelLike;
-  double eveFeelLike;
-  double mornFeelLike;
-  double humidity;
-  double windSpeed;
+  int temp;
+  int min;
+  int max;
+  int day;
+  int night;
+  int eve;
+  int morn;
+  int dayFeelLike;
+  int nightFeelLike;
+  int eveFeelLike;
+  int mornFeelLike;
+  int humidity;
+  int windSpeed;
   int id;
   String description;
 
@@ -39,20 +39,20 @@ class DaysModule {
 
   DaysModule.formJson(Map<String, dynamic> jsonFile) {
     time = jsonFile['dt'];
-    sunrise = jsonFile['sunrise'];
-    sunset = jsonFile['sunset'];
-    min = jsonFile['min'];
-    max = jsonFile['max'];
-    day = jsonFile['day'];
-    night = jsonFile['night'];
-    eve = jsonFile['eve'];
-    morn = jsonFile['morn'];
-    dayFeelLike = jsonFile['feels_like']['day'];
-    nightFeelLike = jsonFile['feels_like']['night'];
-    eveFeelLike = jsonFile['feels_like']['eve'];
-    mornFeelLike = jsonFile['feels_like']['morn'];
-    humidity = jsonFile['humidity'];
-    windSpeed = jsonFile['wind_speed'];
+    sunrise = jsonFile['sunrise'].toInt();
+    sunset = jsonFile['sunset'].toInt();
+    min = jsonFile['temp']['min'].toInt();
+    max = jsonFile['temp']['max'].toInt();
+    day = jsonFile['temp']['day'].toInt();
+    night = jsonFile['temp']['night'].toInt();
+    eve = jsonFile['temp']['eve'].toInt();
+    morn = jsonFile['temp']['morn'].toInt();
+    dayFeelLike = jsonFile['feels_like']['day'].toInt();
+    nightFeelLike = jsonFile['feels_like']['night'].toInt();
+    eveFeelLike = jsonFile['feels_like']['eve'].toInt();
+    mornFeelLike = jsonFile['feels_like']['morn'].toInt();
+    humidity = jsonFile['humidity'].toInt();
+    windSpeed = jsonFile['wind_speed'].toInt();
     id = jsonFile['weather'][0]['id'];
     description = jsonFile['weather'][0]['description'];
   }
