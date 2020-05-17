@@ -7,15 +7,35 @@ import '../services/location.dart';
 import '../services/networking.dart';
 
 class WeatherModel extends ChangeNotifier {
+  NetworkHelper networkHelper = NetworkHelper();
+
   CurrentModule currentWeather;
   List<DaysModule> daysWeather = [];
   List<HourlyModule> hourlyWeather = [];
 
   Future getLocationCurrentWeather(Location location) async {
-    NetworkHelper networkHelper = NetworkHelper();
-
     var weatherData = await networkHelper.getPositionWeather(
         latitude: location.latitude, longitude: location.longitude);
+    print(weatherData);
+    if (weatherData != null) {
+      var weather;
+      currentWeather = CurrentModule.formJson(weatherData['current']);
+      notifyListeners();
+      weatherData['hourly'].forEach((element) {
+        weather = HourlyModule.formJson(element);
+        hourlyWeather.add(weather);
+      });
+      notifyListeners();
+      for (int count = 0; count < 7; count++) {
+        weather = DaysModule.formJson(weatherData['daily'][count]);
+        daysWeather.add(weather);
+      }
+      notifyListeners();
+    }
+  }
+
+  getCityWeather(String city) async {
+    var weatherData = await networkHelper.getCityWeather(city: city);
     print(weatherData);
     if (weatherData != null) {
       var weather;

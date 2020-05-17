@@ -2,8 +2,7 @@ import 'package:climaapp/services/weather.dart';
 import 'package:climaapp/utilities/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-import 'city_screen.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class CurrentWeather extends StatelessWidget {
   @override
@@ -13,44 +12,87 @@ class CurrentWeather extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              FlatButton(
-                onPressed: () {},
-                child: Icon(
-                  Icons.near_me,
-                  size: 50.0,
-                ),
-              ),
-              FlatButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (BuildContext context) {
-                    return CityScreen();
-                  }));
-                },
-                child: Icon(
-                  Icons.location_city,
-                  size: 50.0,
-                ),
-              ),
-            ],
-          ),
           Padding(
             padding: EdgeInsets.only(left: 15.0),
-            child: Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(
-                  '${data.currentWeather.temp}',
-                  style: kTempTextStyle,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      '${data.currentWeather.temp}°C',
+                      style: kTempTextStyle,
+                    ),
+                    Text(
+                      '${data.getWeatherIcon(data.currentWeather.id)}',
+                      style: kConditionTextStyle,
+                    ),
+                  ],
                 ),
                 Text(
-                  '${data.getWeatherIcon(data.currentWeather.id)}',
-                  style: kConditionTextStyle,
-                ),
+                  'Feels like ' +
+                      data.currentWeather.feelLike.toString() +
+                      '°C',
+                  style: KFeelLikeStyle,
+                )
               ],
             ),
+          ),
+          Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    'Humidity',
+                    style: KMainPage,
+                  ),
+                  BoxedIcon(
+                    WeatherIcons.humidity,
+                    size: 50,
+                  ),
+                  Text(
+                    data.currentWeather.humidity.toString() + ' %',
+                    style: KMainPage,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    'Wind Speed',
+                    style: KMainPage,
+                  ),
+                  BoxedIcon(
+                    WeatherIcons.strong_wind,
+                    size: 50,
+                  ),
+                  Text(
+                    data.currentWeather.windSpeed.toString() + ' km/h',
+                    style: KMainPage,
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  Text(
+                    'Wind Degree',
+                    style: KMainPage,
+                  ),
+                  BoxedIcon(
+                    WeatherIcons.wind_direction,
+                    size: 50,
+                  ),
+                  Text(
+                    data.currentWeather.windDeg.toString() + ' °',
+                    style: KMainPage,
+                  ),
+                ],
+              ),
+            ],
           ),
           Padding(
             padding: EdgeInsets.only(right: 15.0),

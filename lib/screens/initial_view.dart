@@ -5,6 +5,7 @@ import './weathercurrent.dart';
 import '../services/weather.dart';
 import '14day_weather.dart';
 import '24hour_weather.dart';
+import 'city_screen.dart';
 
 class LocationScreen extends StatefulWidget {
   @override
@@ -18,7 +19,7 @@ class _LocationScreenState extends State<LocationScreen> {
       return DefaultTabController(
         length: 3,
         child: Scaffold(
-          bottomNavigationBar: TabBar(tabs: <Widget>[
+          bottomNavigationBar: TabBar(tabs: <Tab>[
             Tab(
               text: 'Now',
             ),
@@ -40,11 +41,46 @@ class _LocationScreenState extends State<LocationScreen> {
             ),
             constraints: BoxConstraints.expand(),
             child: SafeArea(
-              child: TabBarView(children: <Widget>[
-                CurrentWeather(),
-                HoursViewer(),
-                DaysViewer(),
-              ]),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      FlatButton(
+                        onPressed: Provider.of<WeatherModel>(context)
+                            .getCurrentWeather,
+                        child: Icon(
+                          Icons.near_me,
+                          size: 50.0,
+                        ),
+                      ),
+                      FlatButton(
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return CityScreen();
+                          }));
+                        },
+                        child: Icon(
+                          Icons.location_city,
+                          size: 50.0,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: TabBarView(
+                      children: <Widget>[
+                        CurrentWeather(),
+                        HoursViewer(),
+                        DaysViewer(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
