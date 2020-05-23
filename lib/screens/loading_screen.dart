@@ -20,7 +20,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
   getData() async {
     await Future.delayed(Duration(seconds: 3));
     await Provider.of<WeatherModel>(context, listen: false).getCurrentWeather();
-    Navigator.push(context, MaterialPageRoute(builder: (context) {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
       return LocationScreen();
     }));
   }

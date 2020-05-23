@@ -56,6 +56,7 @@ class _LocationScreenState extends State<LocationScreen> {
                           size: 50.0,
                         ),
                       ),
+                      Text(Provider.of<WeatherModel>(context).currentCity),
                       FlatButton(
                         onPressed: () {
                           Navigator.push(context, MaterialPageRoute(
@@ -74,7 +75,7 @@ class _LocationScreenState extends State<LocationScreen> {
                     child: TabBarView(
                       children: <Widget>[
                         CurrentWeather(),
-                        HoursViewer(),
+                        LineChartSample2(),
                         DaysViewer(),
                       ],
                     ),

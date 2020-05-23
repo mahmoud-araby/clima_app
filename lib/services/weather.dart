@@ -2,18 +2,23 @@ import 'package:climaapp/Models/current_module.dart';
 import 'package:climaapp/Models/days_module.dart';
 import 'package:climaapp/Models/hourly_module.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../services/location.dart';
 import '../services/networking.dart';
 
 class WeatherModel extends ChangeNotifier {
   NetworkHelper networkHelper = NetworkHelper();
-
+  String currentCity;
+  bool isBusy = false;
+  List<Placemark> cities = [];
   CurrentModule currentWeather;
   List<DaysModule> daysWeather = [];
   List<HourlyModule> hourlyWeather = [];
 
   Future getLocationCurrentWeather(Location location) async {
+    isBusy = true;
+    notifyListeners();
     var weatherData = await networkHelper.getPositionWeather(
         latitude: location.latitude, longitude: location.longitude);
     print(weatherData);
@@ -31,25 +36,7 @@ class WeatherModel extends ChangeNotifier {
         daysWeather.add(weather);
       }
       notifyListeners();
-    }
-  }
-
-  getCityWeather(String city) async {
-    var weatherData = await networkHelper.getCityWeather(city: city);
-    print(weatherData);
-    if (weatherData != null) {
-      var weather;
-      currentWeather = CurrentModule.formJson(weatherData['current']);
-      notifyListeners();
-      weatherData['hourly'].forEach((element) {
-        weather = HourlyModule.formJson(element);
-        hourlyWeather.add(weather);
-      });
-      notifyListeners();
-      for (int count = 0; count < 7; count++) {
-        weather = DaysModule.formJson(weatherData['daily'][count]);
-        daysWeather.add(weather);
-      }
+      isBusy = false;
       notifyListeners();
     }
   }
@@ -58,6 +45,8 @@ class WeatherModel extends ChangeNotifier {
     Location location = Location();
     await location.getCurrentLocation();
     await getLocationCurrentWeather(location);
+    currentCity = location.city;
+    notifyListeners();
   }
 
   String getWeatherIcon(int condition) {
@@ -90,5 +79,15 @@ class WeatherModel extends ChangeNotifier {
     } else {
       return 'Bring a 🧥 just in case';
     }
+  }
+
+  getCity(String text) async {
+    isBusy = true;
+    notifyListeners();
+    List<Placemark> placeMark = await Geolocator().placemarkFromAddress(text);
+    print(placeMark.first.name);
+    cities = placeMark;
+    isBusy = false;
+    notifyListeners();
   }
 }

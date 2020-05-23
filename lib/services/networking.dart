@@ -23,21 +23,4 @@ class NetworkHelper {
     }
     return data;
   }
-
-  Future<Map> getCityWeather({String city}) async {
-    var data;
-    try {
-      http.Response response = await http
-          .get('$openWeatherMapURL?timezone=$city&appid=$apiKey&units=metric');
-      if (response.statusCode == 200) {
-        data = jsonDecode(response.body);
-      } else {
-        data = null;
-      }
-    } catch (e) {
-      print("error");
-      data = null;
-    }
-    return data;
-  }
 }
